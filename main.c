@@ -24,18 +24,23 @@ int *add(int *n1, int *n2, int l1,int l2) {
 	count = l1 < l2 ? l1 : l2;
 
 	// debug info
-	printf("\ndebug");
-	printf("\narray len: %d, count: %d", arrayLen, count);
-	printf("\nl1: %d, l2: %d", l1, l2);
+	printf("\nDEBUG================================");
+	printf("\nsum array len: %d, shortest digit: %d", arrayLen, count);
+	printf("\n\narrays:");
+	printf("\nn1: ");
+	PrintArr(n1, l1);
+	printf("\nn2: ");
+	PrintArr(n2, l2);
+	//printf("\nl1: %d, l2: %d", l1, l2);
 	
 	// debug
 
-	for(i = count; i >= 0; i--) {
-		printf("\niteration: %d", i); // debug
+	for(i = 0; i >= 0; i--) {
+		printf("\n\niteration: %d", i); // debug
 		printf("\nn1: %d, n2: %d", n1[i], n2[i]);
 		
 		if (n1[i] + n2[i] > 10) {
-			printf("\n > 10 ");
+			printf("\n\n > 10 ");
 			
 			mem = 1;
 			sum[i] = n1[i] + n2[i] - 10;
@@ -43,10 +48,11 @@ int *add(int *n1, int *n2, int l1,int l2) {
 			
 		} else if(n1[i] + n2[i] < 10) {
 			sum[i] = n1[i] + n2[i];
+			printf("\n\ninner sum: %d", sum[i]);
 			mem = 0;
 		}
 	}
-	printf("\nsum: ");
+	printf("\n\nsum: ");
 	PrintArr(sum, arrayLen);
 	
 	return sum;
@@ -54,7 +60,7 @@ int *add(int *n1, int *n2, int l1,int l2) {
 
 void PrintArr(int *arr, int l) {
 	int i;
-	for (int i = 0; i < l; i++) {
-		printf("%d", arr[i]);
+	for (i = 0; i < l; i++) {
+		printf("%d ", arr[i]);
 	}
 }
