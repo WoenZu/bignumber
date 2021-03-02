@@ -2,7 +2,7 @@
 // arr_1 and arr_2 is two array which contaun digits for add
 #include <stdio.h>
 #include <stdlib.h>
-#define ARRAY_LEN 9
+#define ARRAY_LEN 25
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
 int *add(int *arr_1, int *arr_2, int len_1, int len_2);
@@ -12,15 +12,10 @@ void reverse(int *destArr, int *sourceArr, int slen);
 int main()
 {
 	int *res;
-	// int arr_1[] = {8,5,3,7,5,2,6,7,8}; // 853 756 987 | 789 657 358
-	// int arr_2[] = {4,3,0,9};
 
-	// TODO cat this digits approx near 000 in second arr
-	// TODO need do something with ARRAY_lEN and zeros if ARRAY_LEN to large
-	// int arr_1[] = {8,5,3,7,5,2,6,7,8,7,4,0,2,5,8,5,7,7,1,3};
-	// int arr_2[] = {4,3,0,9,6,9,2,5,3,0,0,7,5,0,0,0,2,5,4,3,7,1,4,3,8};
-	int arr_1[] = {0,2,5,8,5,7,7,1,3};
-	int arr_2[] = {2,5,4,3,7,1,4,3,8};
+	int arr_1[] = {8,5,3,7,5,2,6,7,8,7,4,0,2,5,8,5,7,7,1,3};
+	int arr_2[] = {4,3,0,9,6,9,2,5,3,0,0,7,5,0,0,0,2,5,4,3,7,1,4,3,8};
+
 	int len_1 = ARRAY_SIZE(arr_1);
 	int len_2 = ARRAY_SIZE(arr_2);
 	res = add(arr_1, arr_2, len_1, len_2);
@@ -63,32 +58,26 @@ int *add(int *arr_1, int *arr_2, int len_1,int len_2)
 		reverse(small, arr_1, len_1);
 	}
 
-	for (i = 0; i <= lbig; i++) {// FIX here
-		
-		if (big[i] + small[i] >= 10) {
+	for (i = 0; i < lbig; i++) {// FIX here
+
+		if (big[i] + small[i] + mem >= 10) {
+
 			if(lsmall < i) {
 				sum[i] = big[i];
 				mem = 0;
 			} else {
-				sum[i] = (big[i] + small[i]) - 10;
+				sum[i] = (big[i] + small[i]) - 10 + mem;
+				mem = 1;
 			}
 
-			if(mem == 1)
-				sum[i] += 1;
-			
-			mem = 1;
 		} else {
 			if(lsmall < i) {
 				sum[i] = big[i];
 				mem = 0;
 			} else {
-				sum[i] = big[i] + small[i];
+				sum[i] = big[i] + small[i] + mem;
+				mem = 0;
 			}
-
-			if(mem == 1)
-				sum[i] += 1;
-			
-			mem = 0;
 		}
 	}
 	
