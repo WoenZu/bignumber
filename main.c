@@ -1,66 +1,108 @@
+// ARRAY_LEN is estimated length of result array
+// arr_1 and arr_2 is two array which contaun digits for add
 #include <stdio.h>
 #include <stdlib.h>
+#define ARRAY_LEN 25
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
-int *add(int *nl, int *n2, int l1, int l2);
-void PrintArr(int *arr, int len);
+int *add(int *arr_1, int *arr_2, int len_1, int len_2);
+void printArr(int *arr, int len);
+void reverse(int *destArr, int *sourceArr, int slen);
 
-int main() {
-	int n1[] = {8};
-	int n2[] = {4, 3};
-	int l1 = sizeof(n1)/sizeof(n1[0]);
-	int l2 = sizeof(n2)/sizeof(n2[0]);
-	add(n1, n2, l1, l2);
-	
+int main()
+{
+	int *res;
+
+	int arr_1[] = {8,5,3,7,5,2,6,7,8,7,4,0,2,5,8,5,7,7,1,3};
+	int arr_2[] = {4,3,0,9,6,9,2,5,3,0,0,7,5,0,0,0,2,5,4,3,7,1,4,3,8};
+
+	int len_1 = ARRAY_SIZE(arr_1);
+	int len_2 = ARRAY_SIZE(arr_2);
+	res = add(arr_1, arr_2, len_1, len_2);
+
+	printf("\nsum: ");
+	printArr(res, ARRAY_LEN);
+	printf("\n ");
+	free(res);
 	return 0;
 }
 
-int *add(int *n1, int *n2, int l1,int l2) {
-	int arrayLen = 5;
-	int *sum = calloc(arrayLen, sizeof(int));
+int *add(int *arr_1, int *arr_2, int len_1,int len_2)
+{
 	int mem = 0;
 	int i;
-	int count;
+	int lbig;
+	int lsmall;
+	int *res;
+	int *big;
+	int *small;
+	int *sum = calloc(ARRAY_LEN, sizeof(int));
 	
-	count = l1 < l2 ? l1 : l2;
+	if(len_1 > len_2) {
+		// arr_1 is BIG
+		lbig = len_1;
+		big = calloc(lbig, sizeof(int));
+		reverse(big, arr_1, len_1);
 
-	// debug info
-	printf("\nDEBUG================================");
-	printf("\nsum array len: %d, shortest digit: %d", arrayLen, count);
-	printf("\n\narrays:");
-	printf("\nn1: ");
-	PrintArr(n1, l1);
-	printf("\nn2: ");
-	PrintArr(n2, l2);
-	//printf("\nl1: %d, l2: %d", l1, l2);
-	
-	// debug
+		lsmall = len_2;
+		small = calloc(lsmall, sizeof(int));
+		reverse(small, arr_2, len_2);
+	} else {
+		// arr_2 is BIG
+		lbig = len_2;
+		big = calloc(lbig, sizeof(int));
+		reverse(big, arr_2, len_2);
 
-	for(i = 0; i >= 0; i--) {
-		printf("\n\niteration: %d", i); // debug
-		printf("\nn1: %d, n2: %d", n1[i], n2[i]);
-		
-		if (n1[i] + n2[i] > 10) {
-			printf("\n\n > 10 ");
-			
-			mem = 1;
-			sum[i] = n1[i] + n2[i] - 10;
-			printf("\ninner sum: %d", sum[i]);
-			
-		} else if(n1[i] + n2[i] < 10) {
-			sum[i] = n1[i] + n2[i];
-			printf("\n\ninner sum: %d", sum[i]);
-			mem = 0;
+		lsmall = len_1;
+		small = calloc(lsmall, sizeof(int));
+		reverse(small, arr_1, len_1);
+	}
+
+	for (i = 0; i < lbig; i++) {// FIX here
+
+		if (big[i] + small[i] + mem >= 10) {
+
+			if(lsmall < i) {
+				sum[i] = big[i];
+				mem = 0;
+			} else {
+				sum[i] = (big[i] + small[i]) - 10 + mem;
+				mem = 1;
+			}
+
+		} else {
+			if(lsmall < i) {
+				sum[i] = big[i];
+				mem = 0;
+			} else {
+				sum[i] = big[i] + small[i] + mem;
+				mem = 0;
+			}
 		}
 	}
-	printf("\n\nsum: ");
-	PrintArr(sum, arrayLen);
 	
-	return sum;
+	res = calloc(ARRAY_LEN, sizeof(int));
+	reverse(res, sum, ARRAY_LEN);
+
+	free(sum);
+	free(big);
+	free(small);
+
+	return res;
 }
 
-void PrintArr(int *arr, int l) {
+void printArr(int *arr, int l)
+{
 	int i;
-	for (i = 0; i < l; i++) {
-		printf("%d ", arr[i]);
-	}
+	for (i = 0; i < l; i++)
+		printf("%d", arr[i]);
+	
+}
+
+void reverse(int *destArr, int *sourceArr, int i)
+{
+	int j = 0;
+	while(i > 0)
+		destArr[j++] = sourceArr[--i];
+
 }
