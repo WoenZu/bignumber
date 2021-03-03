@@ -6,6 +6,8 @@
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
 int *add(int *arr_1, int *arr_2, int len_1, int len_2);
+int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
+
 void printArr(int *arr, int len);
 
 int main()
@@ -18,9 +20,9 @@ int main()
 
 	int len_1 = ARRAY_SIZE(arr_1);
 	int len_2 = ARRAY_SIZE(arr_2);
-	res = add(arr_1, arr_2, len_1, len_2);
-
-	printf("\nSum of arrays is: ");
+	//res = add(arr_1, arr_2, len_1, len_2);
+	res = mul(arr_1, arr_2, len_1, len_2);
+	printf("\nSum/mul of arrays is: ");
 	printArr(res, ARRAY_LEN);
 	printf("\n ");
 	free(res);
@@ -53,6 +55,7 @@ int *add(int *arr_1, int *arr_2, int len_1,int len_2)
 		lsmall = len_1;
 		small = arr_1;
 	}
+
 	delta = lbig - lsmall;
 
 	for (i = lbig - 1; i >= 0; i--) {
@@ -76,10 +79,45 @@ int *add(int *arr_1, int *arr_2, int len_1,int len_2)
 	return sum;
 }
 
+int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
+{
+	int mem = 0;
+	int i;
+	int lbig;
+	int lsmall;
+	int delta;
+	int *big;
+	int *small;
+	int *sum = calloc(ARRAY_LEN, sizeof(int));
+	
+	if(len_1 > len_2) { // TODO what will happend when both have the same length?
+		// arr_1 is BIG
+		lbig = len_1;
+		big = arr_1;
+
+		lsmall = len_2;
+		small = arr_2;
+	} else {
+		// arr_2 is BIG
+		lbig = len_2;
+		big = arr_2;
+
+		lsmall = len_1;
+		small = arr_1;
+	}
+
+	delta = lbig - lsmall;
+
+	for (i = lbig - 1; i >= 0; i--) {
+	
+	}
+
+	return sum;
+}
+
 void printArr(int *arr, int len)
 {
 	int i;
 	for (i = 0; i < len; i++)
 		printf("%d", arr[i]);
 }
-
