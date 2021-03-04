@@ -3,13 +3,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define ARRAY_LEN 10
+#define ARRAY_LEN 30
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-#define PRINT_ARR(x, y)				\
-	do {					\
-		int i;				\
+#define PRINT_ARR(x, y)			\
+	do {				\
+		int i;			\
 		for (i = 0; i < y; i++)	\
-		printf("%d ", x[i]);		\
+		printf("%d ", x[i]);	\
 	} while (0)
 
 
@@ -23,9 +23,12 @@ int main()
 
 	// int arr_1[] = {8,5,3,7,5,2,6,7,8,7,4,0,2,5,8,5,7,7,1,3};
 	// int arr_2[] = {4,3,0,9,6,9,2,5,3,0,0,7,5,0,0,0,2,5,4,3,7,1,4,3,8};
+	
+	int arr_1[] = {8,5,3,7,5,2};
+	int arr_2[] = {4,3,0,9,6};
 
-	int arr_1[] = {5,9,4};
-	int arr_2[] = {5,7};
+	// int arr_1[] = {5,9,4};
+	// int arr_2[] = {5,7};
 
 	int len_1 = ARRAY_SIZE(arr_1);
 	int len_2 = ARRAY_SIZE(arr_2);
@@ -96,9 +99,8 @@ int *add(int *arr_1, int *arr_2, int len_1,int len_2)
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 {
 	int mem;
-	int delta;
 	int offset = 0;
-	int i, j, k = 0;
+	int i, j, l, k = 0;
 	int lbig;
 	int lsmall;
 	int *big;
@@ -138,34 +140,36 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 				stage[k] = mem;
 		}
 
-		for(j = 0; j < ARRAY_LEN; j++) {
-			res[j + offset] = res[j + offset] + stage[j]; // FIX
+		printf("\n\n>>>");
+		mem = 0;
+		int z = 0;
+		for (z = ARRAY_LEN - 1; z >= 0; z--) {
+			//mem = 0;
+			if (z <= 0) {
+				res[z - offset] = stage[z] + mem;
+				mem = 0;
+			} else {
+				if (res[z - offset] + stage[z] + mem >= 10) {
+					printf("\nres[%d]: %d + stage[%d]: %d", z - offset, res[z - offset], z, stage[z]);
+					l = (res[z - offset] + stage[z]) / 10 + mem;
+					res[z - offset] = (res[z - offset] + stage[z] + mem) % 10 ; 
+					mem = l;
+					printf(" = res[%d]: %d, mem: %d offset: %d > 10", z - offset, res[z - offset], mem, offset);
+				} else {
+					printf("\nres[%d]: %d + stage[%d]: %d", z - offset, res[z - offset], z, stage[z]);
+					res[z - offset] = res[z - offset] + stage[z] + mem;
+					printf(" = res[%d]: %d, mem: %d offset: %d", z - offset, res[z - offset], mem, offset);
+					mem = 0;
+				}
+			}			
 		}
+		offset = 1;
 
-	
-	
-		// delta = lbig - lsmall;
-
-		// for (i = lbig - 1; i >= 0; i--) {
-		// 	if (i - delta < 0) {
-		// 		sum[i] = big[i] + mem;
-		// 		mem = 0;
-		// 	} else {
-		// 		if (big[i] + small[i - delta] + mem >= 10) {
-		// 			sum[i] = (big[i] + small[i - delta]) - 10 + mem;
-		// 			mem = 1;
-		// 		} else {
-		// 			sum[i] = big[i] + small[i - delta] + mem;
-		// 			mem = 0;
-		// 		}
-		// 	}			
-		// }
-
-
-		offset++;
-
+		printf("\n\nmiddle stage: ");
+		PRINT_ARR(stage, ARRAY_LEN);
 		printf("\nmiddle result: ");
-		PRINT_ARR(stage, 10);
+		PRINT_ARR(res, ARRAY_LEN);
+		printf("\n");
 	}
 
 	// free(big);
