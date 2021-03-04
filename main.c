@@ -5,10 +5,16 @@
 #include <stdlib.h>
 #define ARRAY_LEN 10
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+#define PRINT_ARR(x, y)				\
+	do {					\
+		int i;				\
+		for (i = 0; i < y; i++)	\
+		printf("%d ", x[i]);		\
+	} while (0)
+
 
 int *add(int *arr_1, int *arr_2, int len_1, int len_2);
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
-void printArr(int *arr, int len);
 
 int main()
 {
@@ -27,11 +33,11 @@ int main()
 	res = mul(arr_1, arr_2, len_1, len_2);
 	printf("\n");
 	printf("\nArray 1: ");
-	printArr(arr_1, len_1);
+	PRINT_ARR(arr_1, len_1);
 	printf("\nArray 2: ");
-	printArr(arr_2, len_2);
+	PRINT_ARR(arr_2, len_2);
 	printf("\nSum/mul of arrays is: ");
-	printArr(res, ARRAY_LEN);
+	PRINT_ARR(res, ARRAY_LEN);
 	printf("\n ");
 	free(res);
 	return 0;
@@ -90,8 +96,9 @@ int *add(int *arr_1, int *arr_2, int len_1,int len_2)
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 {
 	int mem;
+	int delta;
 	int offset = 0;
-	int i, j, z, k = 0;
+	int i, j, k = 0;
 	int lbig;
 	int lsmall;
 	int *big;
@@ -131,23 +138,38 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 				stage[k] = mem;
 		}
 
-		for(z = 0; z < ARRAY_LEN; z++) {
-			res[z + offset] = res[z + offset] + stage[z]; // FIX
+		for(j = 0; j < ARRAY_LEN; j++) {
+			res[j + offset] = res[j + offset] + stage[j]; // FIX
 		}
+
+	
+	
+		// delta = lbig - lsmall;
+
+		// for (i = lbig - 1; i >= 0; i--) {
+		// 	if (i - delta < 0) {
+		// 		sum[i] = big[i] + mem;
+		// 		mem = 0;
+		// 	} else {
+		// 		if (big[i] + small[i - delta] + mem >= 10) {
+		// 			sum[i] = (big[i] + small[i - delta]) - 10 + mem;
+		// 			mem = 1;
+		// 		} else {
+		// 			sum[i] = big[i] + small[i - delta] + mem;
+		// 			mem = 0;
+		// 		}
+		// 	}			
+		// }
+
+
 		offset++;
+
 		printf("\nmiddle result: ");
-		printArr(stage, 10);
+		PRINT_ARR(stage, 10);
 	}
 
 	// free(big);
 	// free(small);
 	
 	return res;
-}
-
-void printArr(int *arr, int len)
-{
-	int i;
-	for (i = 0; i < len; i++)
-		printf("%d ", arr[i]);
 }
