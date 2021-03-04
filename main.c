@@ -97,7 +97,7 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 	int *big;
 	int *small;
 	int *res = calloc(ARRAY_LEN, sizeof(int));
-	int *stage = calloc(10, sizeof(int));
+	int *stage = calloc(ARRAY_LEN, sizeof(int));
 	
 	if(len_1 > len_2) { // TODO what will happend when both have the same length?
 		// arr_1 is BIG
@@ -118,7 +118,7 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 	for (i = lsmall - 1; i >= 0; i--) {
 		int temp;
 		mem = 0;
-		k = 0;
+		k = ARRAY_LEN - 1;
 		printf("\n\n#Iteration: %d", i);
 		for(j = lbig - 1; j >= 0; j--) {
 			printf("\n>Segment: %d", j);
@@ -126,10 +126,11 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 			temp = small[i] * big[j] + mem;
 			mem = temp / 10; printf("\ntemp: %d, mem: %d", temp, temp / 10);
 			stage[k] = temp % 10; printf(", stage: %d to stage[%d]", stage[k], k);
-			k++;
+			k--;
 			if (j == 0)
 				stage[k] = mem;
 		}
+
 		for(z = 0; z < ARRAY_LEN; z++) {
 			res[z + offset] = res[z + offset] + stage[z]; // FIX
 		}
