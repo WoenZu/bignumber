@@ -172,8 +172,9 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 		printf("\n");
 	}
 
-	// free(big);
-	// free(small);
+	free(big);
+	free(small);
+	free(stage);
 	
 	return res;
 }
