@@ -32,8 +32,8 @@ int main()
 
 	int len_1 = ARRAY_SIZE(arr_1);
 	int len_2 = ARRAY_SIZE(arr_2);
-	//res = add(arr_1, arr_2, len_1, len_2);
-	res = mul(arr_1, arr_2, len_1, len_2);
+	res = add(arr_1, arr_2, len_1, len_2);
+	//res = mul(arr_1, arr_2, len_1, len_2);
 	printf("\n");
 	printf("\nArray 1: ");
 	PRINT_ARR(arr_1, len_1);
@@ -89,10 +89,6 @@ int *add(int *arr_1, int *arr_2, int len_1,int len_2)
 			}
 		}			
 	}
-
-	free(big);
-	free(small);
-
 	return sum;
 }
 
@@ -128,53 +124,33 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 		int temp;
 		mem = 0;
 		k = ARRAY_LEN - 1;
-		printf("\n\n#Iteration: %d", i);
 		for(j = lbig - 1; j >= 0; j--) {
-			printf("\n>Segment: %d", j);
-			printf("\nsmall[%d]:%d * big[%d]:%d + mem:%d ", i, small[i], j, big[j], mem);
 			temp = small[i] * big[j] + mem;
-			mem = temp / 10; printf("\ntemp: %d, mem: %d", temp, temp / 10);
-			stage[k] = temp % 10; printf(", stage: %d to stage[%d]", stage[k], k);
+			mem = temp / 10;
+			stage[k] = temp % 10;
 			k--;
 			if (j == 0)
 				stage[k] = mem;
 		}
 
-		printf("\n\n>>>");
 		mem = 0;
 		int z = 0;
 		for (z = ARRAY_LEN - 1; z >= 0; z--) {
-			//mem = 0;
 			if (z <= 0) {
 				res[z - offset] = stage[z] + mem;
 				mem = 0;
 			} else {
-				if (res[z - offset] + stage[z] + mem >= 10) {
-					printf("\nres[%d]: %d + stage[%d]: %d", z - offset, res[z - offset], z, stage[z]);
+				if (res[z - offset] + stage[z] + mem >= 10) {	
 					l = (res[z - offset] + stage[z]) / 10 + mem;
 					res[z - offset] = (res[z - offset] + stage[z] + mem) % 10 ; 
-					mem = l;
-					printf(" = res[%d]: %d, mem: %d offset: %d > 10", z - offset, res[z - offset], mem, offset);
-				} else {
-					printf("\nres[%d]: %d + stage[%d]: %d", z - offset, res[z - offset], z, stage[z]);
+					mem = l;	
+				} else {	
 					res[z - offset] = res[z - offset] + stage[z] + mem;
-					printf(" = res[%d]: %d, mem: %d offset: %d", z - offset, res[z - offset], mem, offset);
 					mem = 0;
 				}
 			}			
 		}
 		offset = 1;
-
-		printf("\n\nmiddle stage: ");
-		PRINT_ARR(stage, ARRAY_LEN);
-		printf("\nmiddle result: ");
-		PRINT_ARR(res, ARRAY_LEN);
-		printf("\n");
 	}
-
-	free(big);
-	free(small);
-	free(stage);
-	
 	return res;
 }
