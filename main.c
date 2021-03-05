@@ -32,8 +32,8 @@ int main()
 
 	int len_1 = ARRAY_SIZE(arr_1);
 	int len_2 = ARRAY_SIZE(arr_2);
-	res = add(arr_1, arr_2, len_1, len_2);
-	//res = mul(arr_1, arr_2, len_1, len_2);
+	//res = add(arr_1, arr_2, len_1, len_2);
+	res = mul(arr_1, arr_2, len_1, len_2);
 	printf("\n");
 	printf("\nArray 1: ");
 	PRINT_ARR(arr_1, len_1);
@@ -42,7 +42,7 @@ int main()
 	printf("\nSum/mul of arrays is: ");
 	PRINT_ARR(res, ARRAY_LEN);
 	printf("\n ");
-	free(res);
+	//free(res);
 	return 0;
 }
 
