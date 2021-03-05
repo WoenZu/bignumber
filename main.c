@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define ARRAY_LEN 20
+#define ARRAY_LEN 12
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #define PRINT_ARR(x, y)			\
 	do {				\
@@ -11,7 +11,15 @@
 		for (i = 0; i < y; i++)	\
 		printf("%d ", x[i]);	\
 	} while (0)
-
+#define RESULT				\
+	do {				\
+		printf("\n\nmiddle stage: ");	\
+		PRINT_ARR(stage, ARRAY_LEN);	\
+		printf("\nmiddle result: ");	\
+		PRINT_ARR(stage, 10);	\
+		PRINT_ARR(res, ARRAY_LEN);	\
+		printf("\n");	\
+	} while(0)
 
 int *add(int *arr_1, int *arr_2, int len_1, int len_2);
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
@@ -27,8 +35,7 @@ int main()
 	// int arr_2[] = {4,3,0,9,6,9,2,5,3,0,0,7,5,0,0,0,2,5,4,3,7,1,4,3,8};
 	
 	int arr_1[] = {8,5,3,7,5,2};
-	int arr_2[] = {4,3,0,9,6};
-
+	int arr_2[] = {4,3,0,9,6}; // 36.793.296.192
 
 	// int arr_1[] = {1,0,0,9}; // = 586
 	// int arr_2[] = {4,2,3}; // Zero test
@@ -36,8 +43,8 @@ int main()
 	int len_1 = ARRAY_SIZE(arr_1);
 	int len_2 = ARRAY_SIZE(arr_2);
 	//res = add(arr_1, arr_2, len_1, len_2);
-	//res = mul(arr_1, arr_2, len_1, len_2);
-	res = sub(arr_1, arr_2, len_1, len_2);
+	res = mul(arr_1, arr_2, len_1, len_2);
+	//res = sub(arr_1, arr_2, len_1, len_2);
 	printf("\n\nArray 1: ");
 	PRINT_ARR(arr_1, len_1);
 	printf("\nArray 2: ");
@@ -154,6 +161,8 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 			}			
 		}
 		offset++;
+
+		RESULT;
 	}
 	return res;
 }
