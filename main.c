@@ -11,15 +11,18 @@
 		for (i = 0; i < y; i++)	\
 		printf("%d ", x[i]);	\
 	} while (0)
-#define RESULT				\
-	do {				\
+
+#define RESULT					\
+	do {					\
 		printf("\n\nmiddle stage: ");	\
 		PRINT_ARR(stage, ARRAY_LEN);	\
 		printf("\nmiddle result: ");	\
-		PRINT_ARR(stage, 10);	\
 		PRINT_ARR(res, ARRAY_LEN);	\
-		printf("\n");	\
+		printf("\n");			\
 	} while(0)
+
+#define BUG_INFO printf("\nres[%d]: %d + stage[%d]: %d", z - offset, res[z - offset], z, stage[z]);
+#define BUG_INF	printf(" = res[%d]: %d, mem: %d offset: %d", z - offset, res[z - offset], mem, offset);
 
 int *add(int *arr_1, int *arr_2, int len_1, int len_2);
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
@@ -28,7 +31,7 @@ int *sub(int *arr_1, int *arr_2, int len_1, int len_2);
 
 int main()
 {
-	printf("\nBE AWARE! Constant ARRAY_LEN is %d", ARRAY_LEN);
+	printf("\nBE AWARE! Constant ARRAY_LEN is %d\n", ARRAY_LEN);
 	int *res;
 
 	// int arr_1[] = {8,5,3,7,5,2,6,7,8,7,4,0,2,5,8,5,7,7,1,3};
@@ -150,9 +153,9 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 				res[z - offset] = stage[z] + mem;
 				mem = 0;
 			} else {
-				if (res[z - offset] + stage[z] + mem >= 10) {	
-					l = (res[z - offset] + stage[z]) / 10 + mem;
-					res[z - offset] = (res[z - offset] + stage[z] + mem) % 10 ; 
+				if (res[z - offset] + stage[z] + mem >= 10) {
+					l = (res[z - offset] + stage[z] + mem) / 10;
+					res[z - offset] = (res[z - offset] + stage[z] + mem) % 10 ;
 					mem = l;	
 				} else {	
 					res[z - offset] = res[z - offset] + stage[z] + mem;
@@ -161,8 +164,6 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 			}			
 		}
 		offset++;
-
-		RESULT;
 	}
 	return res;
 }
