@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define ARRAY_LEN 30
+#define ARRAY_LEN 20
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #define PRINT_ARR(x, y)			\
 	do {				\
@@ -29,16 +29,16 @@ int main()
 	int arr_1[] = {8,5,3,7,5,2};
 	int arr_2[] = {4,3,0,9,6};
 
+
 	// int arr_1[] = {1,0,0,9}; // = 586
 	// int arr_2[] = {4,2,3}; // Zero test
 
 	int len_1 = ARRAY_SIZE(arr_1);
 	int len_2 = ARRAY_SIZE(arr_2);
 	//res = add(arr_1, arr_2, len_1, len_2);
-	res = mul(arr_1, arr_2, len_1, len_2);
-	//res = sub(arr_1, arr_2, len_1, len_2);
-	printf("\n");
-	printf("\nArray 1: ");
+	//res = mul(arr_1, arr_2, len_1, len_2);
+	res = sub(arr_1, arr_2, len_1, len_2);
+	printf("\n\nArray 1: ");
 	PRINT_ARR(arr_1, len_1);
 	printf("\nArray 2: ");
 	PRINT_ARR(arr_2, len_2);
@@ -153,13 +153,37 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 				}
 			}			
 		}
-		offset = 1;
+		offset++;
 	}
 	return res;
 }
 
-int *sub(int *arr_1, int *arr_2, int len_1, int len_2)
+int *sub(int *big, int *small, int lbig, int lsmall)
 {
-	// arr_1[len_1] - arr_2[len_2] = res
-	int mem;
+	// big[lbig] - small[lsmall] = res
+	// option when big < small not implemented
+
+	int mem = 0;
+	int i, j;
+	int delta;
+	int *res = calloc(ARRAY_LEN, sizeof(int));
+
+	delta = lbig - lsmall;
+	
+	for (i = lbig - 1, j = ARRAY_LEN - 1; i >= 0; i--, j--) {
+		if (lsmall - delta < 0) {
+			res[i] = big[i];
+			mem = 0;
+		} else {
+			if(big[i] - mem - small[i - delta] < 0) {
+				res[j] = big[i] - mem + 10 - small[i - delta];
+				mem = 1;
+			} else {
+				res[j] = big[i] - mem - small[i - delta];
+				mem = 0;
+			}
+		}
+	}
+
+	return res;
 }
