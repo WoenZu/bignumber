@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #define ARRAY_LEN 100
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #define PRINT_ARR(x, y)			\
@@ -11,18 +12,6 @@
 		for (i = 0; i < y; i++)	\
 		printf("%d ", x[i]);	\
 	} while (0)
-
-#define RESULT					\
-	do {					\
-		printf("\n\nmiddle stage: ");	\
-		PRINT_ARR(stage, ARRAY_LEN);	\
-		printf("\nmiddle result: ");	\
-		PRINT_ARR(res, ARRAY_LEN);	\
-		printf("\n");			\
-	} while(0)
-
-#define BUG_INFO printf("\nres[%d]: %d + stage[%d]: %d", z - offset, res[z - offset], z, stage[z]);
-#define BUG_INF	printf(" = res[%d]: %d, mem: %d offset: %d", z - offset, res[z - offset], mem, offset);
 
 int *add(int *arr_1, int *arr_2, int len_1, int len_2);
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
