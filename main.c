@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define ARRAY_LEN 12
+#define ARRAY_LEN 100
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #define PRINT_ARR(x, y)			\
 	do {				\
@@ -27,7 +27,7 @@
 int *add(int *arr_1, int *arr_2, int len_1, int len_2);
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
 int *sub(int *arr_1, int *arr_2, int len_1, int len_2);
-//int comb();
+int *comb(int *arr, int len);
 
 int main()
 {
@@ -48,6 +48,7 @@ int main()
 	res = add(arr_1, arr_2, len_1, len_2);
 	//res = mul(arr_1, arr_2, len_1, len_2);
 	//res = sub(arr_1, arr_2, len_1, len_2);
+	comb(res, 6);
 	printf("\n\nArray 1: ");
 	PRINT_ARR(arr_1, len_1);
 	printf("\nArray 2: ");
@@ -197,3 +198,17 @@ int *sub(int *big, int *small, int lbig, int lsmall)
 
 	return res;
 }
+
+int *comb(int *arr, int len)
+{
+	int i, j = 0;
+	int *res;
+	for(i = 0; arr[i] == 0 || i > ARRAY_LEN - 1; i++);
+
+	res = calloc(ARRAY_LEN - i, sizeof(arr[0]));
+	for(i; i < ARRAY_LEN; i++)
+		res[j++] = arr[i];
+	PRINT_ARR(res, 6);
+	return res;
+}
+
