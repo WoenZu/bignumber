@@ -45,8 +45,8 @@ int main()
 
 	int len_1 = ARRAY_SIZE(arr_1);
 	int len_2 = ARRAY_SIZE(arr_2);
-	//res = add(arr_1, arr_2, len_1, len_2);
-	res = mul(arr_1, arr_2, len_1, len_2);
+	res = add(arr_1, arr_2, len_1, len_2);
+	//res = mul(arr_1, arr_2, len_1, len_2);
 	//res = sub(arr_1, arr_2, len_1, len_2);
 	printf("\n\nArray 1: ");
 	PRINT_ARR(arr_1, len_1);
@@ -62,7 +62,7 @@ int main()
 int *add(int *arr_1, int *arr_2, int len_1,int len_2)
 {
 	int mem = 0;
-	int i;
+	int i, j;
 	int lbig;
 	int lsmall;
 	int delta;
@@ -88,16 +88,16 @@ int *add(int *arr_1, int *arr_2, int len_1,int len_2)
 
 	delta = lbig - lsmall;
 
-	for (i = lbig - 1; i >= 0; i--) {
+	for (i = lbig - 1, j = ARRAY_LEN -1; i >= 0; i--, j--) {
 		if (i - delta < 0) {
-			res[i] = big[i] + mem;
+			res[j] = big[i] + mem;
 			mem = 0;
 		} else {
 			if (big[i] + small[i - delta] + mem >= 10) {
-				res[i] = (big[i] + small[i - delta]) - 10 + mem;
+				res[j] = (big[i] + small[i - delta]) - 10 + mem;
 				mem = 1;
 			} else {
-				res[i] = big[i] + small[i - delta] + mem;
+				res[j] = big[i] + small[i - delta] + mem;
 				mem = 0;
 			}
 		}			
