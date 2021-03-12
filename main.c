@@ -32,20 +32,20 @@ int main()
 	// char *arg1 = "853752"; // summ 896848, sub 810656
 	// char *arg2 = "43096"; // mul 36.793.296.192
 	printf("csub>> %s", csub("85", "6"));
+
    	int count = 0;
-	int n = 5;
+	int n = 15;
 	int t = n;	   
 	while (n != 0) {
         	n /= 10;
         	++count;
     	}
-	printf("count:%d", count);
-	char *arg = calloc(count, sizeof(char));
 
-	sprintf(arg, "%d", t);
-
-	res = f(arg); // !5 = 120
-	printf("\n result> %s", res); 
+	//char *arg = calloc(count, sizeof(char));
+	//sprintf(arg, "%d", t);
+	//printf("arg: %s", arg);
+	//res = f(arg); // !5 = 120, !15 = 1307674368000
+	//printf("\n result> %s", res); 
 	return 0;
 }
 
