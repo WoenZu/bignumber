@@ -18,7 +18,7 @@
 char *cadd(char *arg1, char *arg2);
 char *csub(char *arg1, char *arg2);
 char *cmul(char *arg1, char *arg2);
-int *comb(int *arr, int len, int *z);
+int *comb(int *arr, int *z);
 int *fill(char *s);
 char *f(char *n);
 
@@ -31,16 +31,20 @@ int main()
 
 	// char *arg1 = "853752"; // summ 896848, sub 810656
 	// char *arg2 = "43096"; // mul 36.793.296.192
+	printf("csub>> %s", csub("85", "6"));
+   	int count = 0;
+	int n = 5;
+	int t = n;	   
+	while (n != 0) {
+        	n /= 10;
+        	++count;
+    	}
+	printf("count:%d", count);
+	char *arg = calloc(count, sizeof(char));
 
-	//char *arg1 = "85";
-	//char *arg2 = "4";
+	sprintf(arg, "%d", t);
 
-	//res = cadd(arg1, arg2);
-	// res = cmul(arg1, arg2);
-	// res = csub(arg1, arg2);
-
-	// printf("\nResult (main) = %s", res);
-	res = f("5"); // !5 = 120
+	res = f(arg); // !5 = 120
 	printf("\n result> %s", res); 
 	return 0;
 }
@@ -92,7 +96,7 @@ char *cadd(char *arg1, char *arg2)
 		}			
 	}
 
-	tmp = comb(tmp, ARRAY_LEN, &z);
+	tmp = comb(tmp, &z);
 	res = calloc(z, sizeof(char));
 	for (i = 0; i < z; i++) {
 		res[i] = tmp[i] + '0';
@@ -135,12 +139,13 @@ char *csub(char *arg1, char *arg2)
 
 	for (i = 0; i < ARRAY_LEN; i++) {
 		if(tmp[i] != 0) {
-			tmp = comb(tmp, ARRAY_LEN, &z);
+			tmp = comb(tmp, &z);
 			res = calloc(z, sizeof(char));
 			for (i = 0; i < z; i++) {
 				res[i] = tmp[i] + '0';
 			}
-		return res + '\0';
+		res[z] = '\0';
+		return res;
 		} 
 	}
 	return "0";
@@ -211,16 +216,16 @@ char *cmul(char *arg1, char *arg2)
 
 
 
-	tmp = comb(tmp, ARRAY_LEN, &z);
+	tmp = comb(tmp, &z);
 	res = calloc(z, sizeof(char));
 	for (i = 0; i < z; i++) {
 		res[i] = tmp[i] + '0';
 	}
-
-	return res + '\0';
+	res[z] = '\0';
+	return res;
 }
 
-int *comb(int *arr, int len, int *z) // make array without zeros
+int *comb(int *arr, int *z) // make array without zeros
 {
 	// z is the len of res array
 	int i, j = 0;
