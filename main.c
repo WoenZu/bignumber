@@ -17,7 +17,6 @@
 
 char *cadd(char *arg1, char *arg2);
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
-int *sub(int *arr_1, int *arr_2, int len_1, int len_2);
 char *csub(char *arg1, char *arg2);
 int *comb(int *arr, int len, int *z);
 int f(char *n);
@@ -215,36 +214,6 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 		}
 		offset++;
 	}
-	return res;
-}
-
-int *sub(int *big, int *small, int lbig, int lsmall)
-{
-	// big[lbig] - small[lsmall] = res
-	// option when big < small not implemented
-
-	int mem = 0;
-	int i, j;
-	int delta;
-	int *res = calloc(ARRAY_LEN, sizeof(int));
-
-	delta = lbig - lsmall;
-	
-	for (i = lbig - 1, j = ARRAY_LEN - 1; i >= 0; i--, j--) {
-		if (lsmall - delta < 0) {
-			res[i] = big[i];
-			mem = 0;
-		} else {
-			if(big[i] - mem - small[i - delta] < 0) {
-				res[j] = big[i] - mem + 10 - small[i - delta];
-				mem = 1;
-			} else {
-				res[j] = big[i] - mem - small[i - delta];
-				mem = 0;
-			}
-		}
-	}
-
 	return res;
 }
 
