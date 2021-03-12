@@ -15,7 +15,6 @@
 	} while (0)
 #define SPACE 	printf("\n");
 
-int *add(int *arr_1, int *arr_2, int len_1, int len_2);
 char *cadd(char *arg1, char *arg2);
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
 int *sub(int *arr_1, int *arr_2, int len_1, int len_2);
@@ -56,51 +55,6 @@ int main()
 	return 0;
 }
 
-int *add(int *arr_1, int *arr_2, int len_1,int len_2)
-{
-	int mem = 0;
-	int i, j;
-	int lbig;
-	int lsmall;
-	int delta;
-	int *big;
-	int *small;
-	int *res = calloc(ARRAY_LEN, sizeof(int));
-	
-	if(len_1 > len_2) { // TODO what will happend when both have the same length?
-		// arr_1 is BIG
-		lbig = len_1;
-		big = arr_1;
-
-		lsmall = len_2;
-		small = arr_2;
-	} else {
-		// arr_2 is BIG
-		lbig = len_2;
-		big = arr_2;
-
-		lsmall = len_1;
-		small = arr_1;
-	}
-
-	delta = lbig - lsmall;
-
-	for (i = lbig - 1, j = ARRAY_LEN -1; i >= 0; i--, j--) {
-		if (i - delta < 0) {
-			res[j] = big[i] + mem;
-			mem = 0;
-		} else {
-			if (big[i] + small[i - delta] + mem >= 10) {
-				res[j] = (big[i] + small[i - delta]) - 10 + mem;
-				mem = 1;
-			} else {
-				res[j] = big[i] + small[i - delta] + mem;
-				mem = 0;
-			}
-		}			
-	}
-	return res;
-}
 
 char *cadd(char *arg1, char *arg2)
 {	
