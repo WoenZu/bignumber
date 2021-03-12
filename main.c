@@ -3,8 +3,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#define ARRAY_LEN 100
+#define ARRAY_LEN 10
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #define PRINT_ARR(x, y)			\
 	do {				\
@@ -12,39 +13,45 @@
 		for (i = 0; i < y; i++)	\
 		printf("%d ", x[i]);	\
 	} while (0)
+#define SPACE 	printf("\n");
 
 int *add(int *arr_1, int *arr_2, int len_1, int len_2);
+char *cadd(char *arg1, char *arg2);
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
 int *sub(int *arr_1, int *arr_2, int len_1, int len_2);
-int *comb(int *arr, int len);
+int *comb(int *arr, int len, int *z);
+int f(char *n);
+int *fill(char *s, int len);
 
 int main()
 {
 	printf("\nBE AWARE! Constant ARRAY_LEN is %d\n", ARRAY_LEN);
-	int *res;
-
+	//int *res;
+	char *res;
 	// int arr_1[] = {8,5,3,7,5,2,6,7,8,7,4,0,2,5,8,5,7,7,1,3};
 	// int arr_2[] = {4,3,0,9,6,9,2,5,3,0,0,7,5,0,0,0,2,5,4,3,7,1,4,3,8};
 	
-	int arr_1[] = {8,5,3,7,5,2};
+	int arr_1[] = {8,5,3,7,5,2}; //summ 896848
 	int arr_2[] = {4,3,0,9,6}; // 36.793.296.192
-
-	// int arr_1[] = {1,0,0,9}; // = 586
-	// int arr_2[] = {4,2,3}; // Zero test
+	
+	char *arg1 = "853752";
+	char *arg2 = "43096";
 
 	int len_1 = ARRAY_SIZE(arr_1);
 	int len_2 = ARRAY_SIZE(arr_2);
-	res = add(arr_1, arr_2, len_1, len_2);
+
+	//res = add(arr_1, arr_2, len_1, len_2);
 	//res = mul(arr_1, arr_2, len_1, len_2);
 	//res = sub(arr_1, arr_2, len_1, len_2);
-	comb(res, 6);
-	printf("\n\nArray 1: ");
-	PRINT_ARR(arr_1, len_1);
-	printf("\nArray 2: ");
-	PRINT_ARR(arr_2, len_2);
-	printf("\nSum/mul of arrays is: ");
-	PRINT_ARR(res, ARRAY_LEN);
-	printf("\n ");
+	res = cadd(arg1, arg2);
+	printf("\nResult (main) = %s", res);
+	// printf("\n\nArray 1: ");
+	// PRINT_ARR(arr_1, len_1);
+	// printf("\nArray 2: ");
+	// PRINT_ARR(arr_2, len_2);
+	// printf("\nSum/mul of arrays is: ");
+	// PRINT_ARR(res, ARRAY_LEN);
+	// printf("\n ");
 	//free(res);
 	return 0;
 }
@@ -92,6 +99,65 @@ int *add(int *arr_1, int *arr_2, int len_1,int len_2)
 			}
 		}			
 	}
+	return res;
+}
+
+char *cadd(char *arg1, char *arg2)
+{	
+	char *res;
+	int lbig, lsmall;
+	int *big, *small;
+	int i, z = 0;
+	int mem = 0;
+	int len1 = strlen(arg1), len2= strlen(arg2);
+	int *tmp = calloc(ARRAY_LEN, sizeof(int));
+	int j = ARRAY_LEN - 1;
+
+	if(len1 > len2) {
+		lbig = len1;
+		big = calloc(len1, sizeof(int));
+		big = fill(arg1, len1);
+		lsmall = len2;
+		small = calloc(len2, sizeof(int));
+		small = fill(arg2, len2);
+	
+	} else {
+		lbig = len2;
+		big = calloc(len2, sizeof(int));
+		big = fill(arg2, len2);
+		lsmall = len1;
+		small = calloc(len1, sizeof(int));
+		small = fill(arg1, len1);
+	}
+	
+	PRINT_ARR(big, lbig);
+	SPACE
+	PRINT_ARR(small, lsmall);
+
+	i = lbig - 1;
+	int delta = lbig - lsmall;
+
+
+	for (i = lbig - 1; i >= 0; i--) {
+		if (i - delta < 0) {
+			tmp[j--] = big[i] + mem;
+			mem = 0;
+		} else {
+			if (big[i] + small[i - delta] + mem >= 10) {
+				tmp[j--] = (big[i] + small[i - delta]) - 10 + mem;
+				mem = 1;
+			} else {
+				tmp[j--] = big[i] + small[i - delta] + mem;
+				mem = 0;
+			}
+		}			
+	}
+
+	tmp = comb(tmp, ARRAY_LEN, &z);
+	res = calloc(z, sizeof(char));
+
+	sprintf(res, "%d", *tmp);
+
 	return res;
 }
 
@@ -188,16 +254,34 @@ int *sub(int *big, int *small, int lbig, int lsmall)
 	return res;
 }
 
-int *comb(int *arr, int len)
+int *comb(int *arr, int len, int *z) // make array without zeros
 {
+	// z is the len of res array
 	int i, j = 0;
-	int *res;
-	for(i = 0; arr[i] == 0 || i > ARRAY_LEN - 1; i++);
-
-	res = calloc(ARRAY_LEN - i, sizeof(arr[0]));
-	for(i; i < ARRAY_LEN; i++)
-		res[j++] = arr[i];
-	PRINT_ARR(res, 6);
-	return res;
+	int *r;
+	for(i = 0; arr[i] == 0; i++)
+		;
+	*z = ARRAY_LEN - i;
+	r = calloc(*z, sizeof(arr[0]));
+	for(; i < ARRAY_LEN; i++)
+		r[j++] = arr[i];
+	return r;
 }
 
+int *fill(char *s, int len) // fill array with numbers from string
+{
+	int i;
+	int *arr = calloc(len, sizeof(int));
+	for(i = 0; i < len; i++) {
+		arr[i] = s[i] - '0';
+	}
+	return arr;
+
+}
+
+// int f(char *n)
+// {	// n need to be translated to int here for checking n == 0
+// 	printf("\nlen of n%I64d", strlen(n));
+//   //return n == 0 ? 1 : f(n-1)*n;
+//   return 0; // placeholder
+// }
