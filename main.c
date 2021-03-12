@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define ARRAY_LEN 10
+#define ARRAY_LEN 100
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #define PRINT_ARR(x, y)			\
 	do {				\
@@ -18,9 +18,10 @@
 char *cadd(char *arg1, char *arg2);
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
 char *csub(char *arg1, char *arg2);
+char *cmul(char *arg1, char *arg2);
 int *comb(int *arr, int len, int *z);
-int f(char *n);
 int *fill(char *s, int len);
+int f(char *n);
 
 int main()
 {
@@ -40,9 +41,9 @@ int main()
 	int len_2 = ARRAY_SIZE(arr_2);
 
 	//res = mul(arr_1, arr_2, len_1, len_2);
-	//res = sub(arr_1, arr_2, len_1, len_2);
 	//res = cadd(arg1, arg2);
-	res = csub(arg1, arg2);
+	res = cmul(arg1, arg2);
+	//res = csub(arg1, arg2);
 	printf("\nResult (main) = %s", res);
 	// printf("\n\nArray 1: ");
 	// PRINT_ARR(arr_1, len_1);
@@ -154,6 +155,80 @@ char *csub(char *arg1, char *arg2)
 	return res;
 }
 
+char *cmul(char *arg1, char *arg2)
+{
+	char *res;
+	int lbig, lsmall;
+	int *big, *small;
+	int i, j, l, z = 0, k = 0;
+	int mem;
+	int offset = 0;
+
+	int len1 = strlen(arg1), len2= strlen(arg2);
+	int *tmp = calloc(ARRAY_LEN, sizeof(int));
+	int *stage = calloc(ARRAY_LEN, sizeof(int));
+
+	if(len1 > len2) {
+		lbig = len1;
+		big = calloc(len1, sizeof(int));
+		big = fill(arg1, len1);
+		lsmall = len2;
+		small = calloc(len2, sizeof(int));
+		small = fill(arg2, len2);
+	
+	} else {
+		lbig = len2;
+		big = calloc(len2, sizeof(int));
+		big = fill(arg2, len2);
+		lsmall = len1;
+		small = calloc(len1, sizeof(int));
+		small = fill(arg1, len1);
+	}
+
+	for (i = lsmall - 1; i >= 0; i--) {
+		int t;
+		mem = 0;
+		k = ARRAY_LEN - 1;
+		for(j = lbig - 1; j >= 0; j--) {
+			t = small[i] * big[j] + mem;
+			mem = t / 10;
+			stage[k] = t % 10;
+			k--;
+			if (j == 0)
+				stage[k] = mem;
+		}
+
+		mem = 0;
+		int z = 0;
+		for (z = ARRAY_LEN - 1; z >= 0; z--) {
+			if (z <= 0) {
+				tmp[z - offset] = stage[z] + mem;
+				mem = 0;
+			} else {
+				if (tmp[z - offset] + stage[z] + mem >= 10) {
+					l = (tmp[z - offset] + stage[z] + mem) / 10;
+					tmp[z - offset] = (tmp[z - offset] + stage[z] + mem) % 10 ;
+					mem = l;	
+				} else {	
+					tmp[z - offset] = tmp[z - offset] + stage[z] + mem;
+					mem = 0;
+				}
+			}			
+		}
+		offset++;
+	}
+
+
+
+	tmp = comb(tmp, ARRAY_LEN, &z);
+	res = calloc(z, sizeof(char));
+	for (i = 0; i < z; i++) {
+		res[i] = tmp[i] + '0';
+	}
+
+	return res;
+}
+
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 {
 	int mem;
@@ -163,6 +238,7 @@ int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
 	int lsmall;
 	int *big;
 	int *small;
+
 	int *res = calloc(ARRAY_LEN, sizeof(int));
 	int *stage = calloc(ARRAY_LEN, sizeof(int));
 	
