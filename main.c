@@ -16,7 +16,6 @@
 #define SPACE 	printf("\n");
 
 char *cadd(char *arg1, char *arg2);
-int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
 char *csub(char *arg1, char *arg2);
 char *cmul(char *arg1, char *arg2);
 int *comb(int *arr, int len, int *z);
@@ -55,7 +54,6 @@ int main()
 	//free(res);
 	return 0;
 }
-
 
 char *cadd(char *arg1, char *arg2)
 {	
@@ -226,70 +224,6 @@ char *cmul(char *arg1, char *arg2)
 		res[i] = tmp[i] + '0';
 	}
 
-	return res;
-}
-
-int *mul(int *arr_1, int *arr_2, int len_1, int len_2)
-{
-	int mem;
-	int offset = 0;
-	int i, j, l, k = 0;
-	int lbig;
-	int lsmall;
-	int *big;
-	int *small;
-
-	int *res = calloc(ARRAY_LEN, sizeof(int));
-	int *stage = calloc(ARRAY_LEN, sizeof(int));
-	
-	if(len_1 > len_2) { // TODO what will happend when both have the same length?
-		// arr_1 is BIG
-		lbig = len_1;
-		big = arr_1;
-
-		lsmall = len_2;
-		small = arr_2;
-	} else {
-		// arr_2 is BIG
-		lbig = len_2;
-		big = arr_2;
-
-		lsmall = len_1;
-		small = arr_1;
-	}
-
-	for (i = lsmall - 1; i >= 0; i--) {
-		int temp;
-		mem = 0;
-		k = ARRAY_LEN - 1;
-		for(j = lbig - 1; j >= 0; j--) {
-			temp = small[i] * big[j] + mem;
-			mem = temp / 10;
-			stage[k] = temp % 10;
-			k--;
-			if (j == 0)
-				stage[k] = mem;
-		}
-
-		mem = 0;
-		int z = 0;
-		for (z = ARRAY_LEN - 1; z >= 0; z--) {
-			if (z <= 0) {
-				res[z - offset] = stage[z] + mem;
-				mem = 0;
-			} else {
-				if (res[z - offset] + stage[z] + mem >= 10) {
-					l = (res[z - offset] + stage[z] + mem) / 10;
-					res[z - offset] = (res[z - offset] + stage[z] + mem) % 10 ;
-					mem = l;	
-				} else {	
-					res[z - offset] = res[z - offset] + stage[z] + mem;
-					mem = 0;
-				}
-			}			
-		}
-		offset++;
-	}
 	return res;
 }
 
