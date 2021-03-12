@@ -19,39 +19,29 @@ char *cadd(char *arg1, char *arg2);
 char *csub(char *arg1, char *arg2);
 char *cmul(char *arg1, char *arg2);
 int *comb(int *arr, int len, int *z);
-int *fill(char *s, int len);
-int f(char *n);
+int *fill(char *s);
+char *f(char *n);
 
 int main()
 {
 	printf("\nBE AWARE! Constant ARRAY_LEN is %d\n", ARRAY_LEN);
-	//int *res;
 	char *res;
-	// int arr_1[] = {8,5,3,7,5,2,6,7,8,7,4,0,2,5,8,5,7,7,1,3};
-	// int arr_2[] = {4,3,0,9,6,9,2,5,3,0,0,7,5,0,0,0,2,5,4,3,7,1,4,3,8};
-	
-	int arr_1[] = {8,5,3,7,5,2}; //summ 896848, sub 810656
-	int arr_2[] = {4,3,0,9,6}; // 36.793.296.192
-	
-	char *arg1 = "853752";
-	char *arg2 = "43096";
+	// char *arg1 = "85375267874025857713";
+	// char *arg2 = "4309692530075000254371438";
 
-	int len_1 = ARRAY_SIZE(arr_1);
-	int len_2 = ARRAY_SIZE(arr_2);
+	// char *arg1 = "853752"; // summ 896848, sub 810656
+	// char *arg2 = "43096"; // mul 36.793.296.192
 
-	//res = mul(arr_1, arr_2, len_1, len_2);
+	//char *arg1 = "85";
+	//char *arg2 = "4";
+
 	//res = cadd(arg1, arg2);
-	res = cmul(arg1, arg2);
-	//res = csub(arg1, arg2);
-	printf("\nResult (main) = %s", res);
-	// printf("\n\nArray 1: ");
-	// PRINT_ARR(arr_1, len_1);
-	// printf("\nArray 2: ");
-	// PRINT_ARR(arr_2, len_2);
-	// printf("\nSum/mul of arrays is: ");
-	// PRINT_ARR(res, ARRAY_LEN);
-	// printf("\n ");
-	//free(res);
+	// res = cmul(arg1, arg2);
+	// res = csub(arg1, arg2);
+
+	// printf("\nResult (main) = %s", res);
+	res = f("5"); // !5 = 120
+	printf("\n result> %s", res); 
 	return 0;
 }
 
@@ -69,18 +59,18 @@ char *cadd(char *arg1, char *arg2)
 	if(len1 > len2) {
 		lbig = len1;
 		big = calloc(len1, sizeof(int));
-		big = fill(arg1, len1);
+		big = fill(arg1);
 		lsmall = len2;
 		small = calloc(len2, sizeof(int));
-		small = fill(arg2, len2);
+		small = fill(arg2);
 	
 	} else {
 		lbig = len2;
 		big = calloc(len2, sizeof(int));
-		big = fill(arg2, len2);
+		big = fill(arg2);
 		lsmall = len1;
 		small = calloc(len1, sizeof(int));
-		small = fill(arg1, len1);
+		small = fill(arg1);
 	}
 
 	i = lbig - 1;
@@ -108,14 +98,13 @@ char *cadd(char *arg1, char *arg2)
 		res[i] = tmp[i] + '0';
 	}
 
-	return res;
+	return res + '\0';
 }
 
 char *csub(char *arg1, char *arg2)
 {
 	// big[lbig] - small[lsmall] = res
 	// option when big < small not implemented
-
 	char *res;
 	int *big, *small;
 	int i, z = 0;
@@ -126,8 +115,8 @@ char *csub(char *arg1, char *arg2)
 	int j = ARRAY_LEN - 1;
 	int delta = lbig - lsmall;
 
-	big = fill(arg1, lbig);
-	small = fill(arg2, lsmall);
+	big = fill(arg1);
+	small = fill(arg2);
 
 	for (i = lbig - 1; i >= 0; i--) {
 		if (i - delta < 0) {
@@ -144,13 +133,17 @@ char *csub(char *arg1, char *arg2)
 		}
 	}
 
-	tmp = comb(tmp, ARRAY_LEN, &z);
-	res = calloc(z, sizeof(char));
-	for (i = 0; i < z; i++) {
-		res[i] = tmp[i] + '0';
+	for (i = 0; i < ARRAY_LEN; i++) {
+		if(tmp[i] != 0) {
+			tmp = comb(tmp, ARRAY_LEN, &z);
+			res = calloc(z, sizeof(char));
+			for (i = 0; i < z; i++) {
+				res[i] = tmp[i] + '0';
+			}
+		return res + '\0';
+		} 
 	}
-
-	return res;
+	return "0";
 }
 
 char *cmul(char *arg1, char *arg2)
@@ -169,18 +162,18 @@ char *cmul(char *arg1, char *arg2)
 	if(len1 > len2) {
 		lbig = len1;
 		big = calloc(len1, sizeof(int));
-		big = fill(arg1, len1);
+		big = fill(arg1);
 		lsmall = len2;
 		small = calloc(len2, sizeof(int));
-		small = fill(arg2, len2);
+		small = fill(arg2);
 	
 	} else {
 		lbig = len2;
 		big = calloc(len2, sizeof(int));
-		big = fill(arg2, len2);
+		big = fill(arg2);
 		lsmall = len1;
 		small = calloc(len1, sizeof(int));
-		small = fill(arg1, len1);
+		small = fill(arg1);
 	}
 
 	for (i = lsmall - 1; i >= 0; i--) {
@@ -224,7 +217,7 @@ char *cmul(char *arg1, char *arg2)
 		res[i] = tmp[i] + '0';
 	}
 
-	return res;
+	return res + '\0';
 }
 
 int *comb(int *arr, int len, int *z) // make array without zeros
@@ -241,8 +234,9 @@ int *comb(int *arr, int len, int *z) // make array without zeros
 	return r;
 }
 
-int *fill(char *s, int len) // fill array with numbers from string
-{
+int *fill(char *s) // fill array with numbers from string
+{	
+	int len = strlen(s);
 	int i;
 	int *arr = calloc(len, sizeof(int));
 	for(i = 0; i < len; i++) {
@@ -252,9 +246,7 @@ int *fill(char *s, int len) // fill array with numbers from string
 
 }
 
-// int f(char *n)
-// {	// n need to be translated to int here for checking n == 0
-// 	printf("\nlen of n%I64d", strlen(n));
-//   //return n == 0 ? 1 : f(n-1)*n;
-//   return 0; // placeholder
-// }
+char *f(char *n)
+{	
+ 	return !strcmp(n,"0") ? "1" : cmul( f( csub(n, "1") ), n);
+}
