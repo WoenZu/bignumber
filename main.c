@@ -155,9 +155,9 @@ char *cadd(char *arg1, char *arg2)
 
 	tmp = comb(tmp, ARRAY_LEN, &z);
 	res = calloc(z, sizeof(char));
-
-	sprintf(res, "%d", *tmp);
-
+	for (i = 0; i < z; i++) {
+		res[i] = tmp[i] + '0';
+	}
 	return res;
 }
 
