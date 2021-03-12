@@ -18,6 +18,7 @@
 char *cadd(char *arg1, char *arg2);
 int *mul(int *arr_1, int *arr_2, int len_1, int len_2);
 int *sub(int *arr_1, int *arr_2, int len_1, int len_2);
+char *csub(char *arg1, char *arg2);
 int *comb(int *arr, int len, int *z);
 int f(char *n);
 int *fill(char *s, int len);
@@ -30,7 +31,7 @@ int main()
 	// int arr_1[] = {8,5,3,7,5,2,6,7,8,7,4,0,2,5,8,5,7,7,1,3};
 	// int arr_2[] = {4,3,0,9,6,9,2,5,3,0,0,7,5,0,0,0,2,5,4,3,7,1,4,3,8};
 	
-	int arr_1[] = {8,5,3,7,5,2}; //summ 896848
+	int arr_1[] = {8,5,3,7,5,2}; //summ 896848, sub 810656
 	int arr_2[] = {4,3,0,9,6}; // 36.793.296.192
 	
 	char *arg1 = "853752";
@@ -39,10 +40,10 @@ int main()
 	int len_1 = ARRAY_SIZE(arr_1);
 	int len_2 = ARRAY_SIZE(arr_2);
 
-	//res = add(arr_1, arr_2, len_1, len_2);
 	//res = mul(arr_1, arr_2, len_1, len_2);
 	//res = sub(arr_1, arr_2, len_1, len_2);
-	res = cadd(arg1, arg2);
+	//res = cadd(arg1, arg2);
+	res = csub(arg1, arg2);
 	printf("\nResult (main) = %s", res);
 	// printf("\n\nArray 1: ");
 	// PRINT_ARR(arr_1, len_1);
@@ -83,10 +84,6 @@ char *cadd(char *arg1, char *arg2)
 		small = calloc(len1, sizeof(int));
 		small = fill(arg1, len1);
 	}
-	
-	PRINT_ARR(big, lbig);
-	SPACE
-	PRINT_ARR(small, lsmall);
 
 	i = lbig - 1;
 	int delta = lbig - lsmall;
@@ -112,6 +109,49 @@ char *cadd(char *arg1, char *arg2)
 	for (i = 0; i < z; i++) {
 		res[i] = tmp[i] + '0';
 	}
+
+	return res;
+}
+
+char *csub(char *arg1, char *arg2)
+{
+	// big[lbig] - small[lsmall] = res
+	// option when big < small not implemented
+
+	char *res;
+	int *big, *small;
+	int i, z = 0;
+	int mem = 0;
+
+	int lbig = strlen(arg1), lsmall= strlen(arg2);
+	int *tmp = calloc(ARRAY_LEN, sizeof(int));
+	int j = ARRAY_LEN - 1;
+	int delta = lbig - lsmall;
+
+	big = fill(arg1, lbig);
+	small = fill(arg2, lsmall);
+
+	for (i = lbig - 1; i >= 0; i--) {
+		if (i - delta < 0) {
+			tmp[j--] = big[i];
+			mem = 0;
+		} else {
+			if(big[i] - mem - small[i - delta] < 0) {
+				tmp[j--] = big[i] - mem + 10 - small[i - delta];
+				mem = 1;
+			} else {
+				tmp[j--] = big[i] - mem - small[i - delta];
+				mem = 0;
+			}
+		}
+	}
+
+	tmp = comb(tmp, ARRAY_LEN, &z);
+	res = calloc(z, sizeof(char));
+	for (i = 0; i < z; i++) {
+		res[i] = tmp[i] + '0';
+	}
+
 	return res;
 }
 
