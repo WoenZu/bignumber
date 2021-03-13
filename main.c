@@ -31,7 +31,7 @@ int main()
 
 	// char *arg1 = "853752"; // summ 896848, sub 810656
 	// char *arg2 = "43096"; // mul 36.793.296.192
-	printf("csub>> %s", csub("85", "6"));
+	printf("csub>> %s", csub("20", "1"));
 
    	int count = 0;
 	int n = 15;
@@ -124,7 +124,7 @@ char *csub(char *arg1, char *arg2)
 
 	for (i = lbig - 1; i >= 0; i--) {
 		if (i - delta < 0) {
-			tmp[j--] = big[i];
+			tmp[j--] = big[i] - mem;
 			mem = 0;
 		} else {
 			if(big[i] - mem - small[i - delta] < 0) {
