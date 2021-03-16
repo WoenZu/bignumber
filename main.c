@@ -65,18 +65,14 @@ char *cadd(char *arg1, char *arg2)
 
 	if(len1 > len2) {
 		lbig = len1;
-		big = calloc(len1, sizeof(int));
 		big = fill(arg1);
 		lsmall = len2;
-		small = calloc(len2, sizeof(int));
 		small = fill(arg2);
 	
 	} else {
 		lbig = len2;
-		big = calloc(len2, sizeof(int));
 		big = fill(arg2);
 		lsmall = len1;
-		small = calloc(len1, sizeof(int));
 		small = fill(arg1);
 	}
 
@@ -104,7 +100,10 @@ char *cadd(char *arg1, char *arg2)
 	for (i = 0; i < z; i++) {
 		res[i] = tmp[i] + '0';
 	}
-
+        
+        free(tmp);
+	free(big);
+	free(small);
 	return res + '\0';
 }
 
@@ -154,7 +153,8 @@ char *csub(char *arg1, char *arg2)
 		return res;
 		} 
 	}
-	free(tmp);
+	
+        free(tmp);
 	free(big);
 	free(small);
 	return "0";
@@ -168,25 +168,20 @@ char *cmul(char *arg1, char *arg2)
 	int i, j, l, z = 0, k = 0;
 	int mem;
 	int offset = 0;
-
-	int len1 = strlen(arg1), len2= strlen(arg2);
+        int len1 = strlen(arg1), len2 = strlen(arg2); 
 	int *tmp = calloc(ARRAY_LEN, sizeof(int));
 	int *stage = calloc(ARRAY_LEN, sizeof(int));
 
 	if(len1 > len2) {
 		lbig = len1;
-		big = calloc(len1, sizeof(int));
 		big = fill(arg1);
 		lsmall = len2;
-		small = calloc(len2, sizeof(int));
 		small = fill(arg2);
 	
 	} else {
 		lbig = len2;
-		big = calloc(len2, sizeof(int));
 		big = fill(arg2);
 		lsmall = len1;
-		small = calloc(len1, sizeof(int));
 		small = fill(arg1);
 	}
 
@@ -223,14 +218,13 @@ char *cmul(char *arg1, char *arg2)
 		offset++;
 	}
 
-
-
 	tmp = comb(tmp, &z);// FIX may be here is a bug
 	res = calloc(z, sizeof(char));
 	for (i = 0; i < z; i++) {
 		res[i] = tmp[i] + '0';
 	}
 	res[z] = '\0';
+        
         free(big);
         free(small);
         free(stage);
