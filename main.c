@@ -31,21 +31,24 @@ int main()
 
 	// char *arg1 = "853752"; // summ 896848, sub 810656
 	// char *arg2 = "43096"; // mul 36.793.296.192
-	printf("csub>> %s", csub("20", "1"));
+	//res = csub("20", "1");
+	//printf("csub>> %s", res);
 
-   	int count = 0;
+	int count = 0;
 	int n = 15;
 	int t = n;	   
 	while (n != 0) {
-        	n /= 10;
-        	++count;
+		n /= 10;
+		++count;
     	}
-
-	//char *arg = calloc(count, sizeof(char));
-	//sprintf(arg, "%d", t);
-	//printf("arg: %s", arg);
-	//res = f(arg); // !5 = 120, !15 = 1307674368000
-	//printf("\n result> %s", res); 
+	//free(res);	
+	char *arg = calloc(count, sizeof(char));
+	sprintf(arg, "%d", t);
+	printf("arg: %s", arg);
+	res = f(arg); // !5 = 120, !15 = 1307674368000
+	printf("\n result> %s", res); 
+	free(res);
+	free(arg);
 	return 0;
 }
 
@@ -144,10 +147,16 @@ char *csub(char *arg1, char *arg2)
 			for (i = 0; i < z; i++) {
 				res[i] = tmp[i] + '0';
 			}
+		free(tmp);
+		free(big);
+		free(small);
 		res[z] = '\0';
 		return res;
 		} 
 	}
+	free(tmp);
+	free(big);
+	free(small);
 	return "0";
 }
 
@@ -216,12 +225,16 @@ char *cmul(char *arg1, char *arg2)
 
 
 
-	tmp = comb(tmp, &z);
+	tmp = comb(tmp, &z);// FIX may be here is a bug
 	res = calloc(z, sizeof(char));
 	for (i = 0; i < z; i++) {
 		res[i] = tmp[i] + '0';
 	}
 	res[z] = '\0';
+        free(big);
+        free(small);
+        free(stage);
+        free(tmp);
 	return res;
 }
 
