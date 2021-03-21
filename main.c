@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define ARRAY_LEN 10
+#define ARRAY_LEN 1000
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #define PRINT_ARR(x, y)			\
         do {				\
@@ -31,24 +31,29 @@ int main()
 
         // char *arg1 = "853752"; // summ 896848, sub 810656
         // char *arg2 = "43096"; // mul 36.793.296.192
-        res = csub("78", "1");
+        //res = csub("78", "1");
+        //res = cmul("25", "2");
+        //res = cadd("78", "1");
+        //res = cadd("78", "1");
 
-        //int count = 0;
-        //int n = 33;
-        //int t = n;	   
-        //while (n != 0) {
-        //	n /= 10;
-        //	++count;
-        //}
+        int count = 0;
+        int input = 33; // after 33 memory will buggy
+        int tmp = input; 
+        
+        while (tmp != 0) {
+                tmp /= 10;
+                ++count;
+        }
 
-        //free(res);	
-        //char *arg = calloc(count + 1, sizeof(arg));
-        //sprintf(arg, "%d", t);
-        //printf("\narg: %s", arg);
-        //res = f(arg); // !5 = 120, !15 = 1307674368000
+        char *arg = calloc(count + 1, sizeof(arg));
+        sprintf(arg, "%d", input);
+        printf("\narg: %s", arg);
+        res = f(arg); // !5 = 120, !15 = 1307674368000
+
         printf("\n result> %s", res); 
-        //free(res);
-        //free(arg);
+
+        free(res);
+        free(arg);
         return 0;
 }
 
@@ -123,12 +128,6 @@ char *csub(char *arg1, char *arg2)
 
         big = fill(arg1);
         small = fill(arg2);
-        printf("\nbig: ");
-        PRINT_ARR(big, lbig);
-        printf("\nsmall: ");
-        PRINT_ARR(small, lsmall);
-        SPACE
-        SPACE
         for (i = lbig - 1; i >= 0; i--) {
                 if (i - delta < 0) {
                         tmp[j--] = big[i] - mem;
