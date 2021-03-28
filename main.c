@@ -13,7 +13,7 @@
                 for (i = 0; i < y; i++)	\
                 printf("%d ", x[i]);	\
         } while (0)
-#define SPACE 	printf("\n");
+#define SPACE printf("\n");
 
 char *cadd(char *arg1, char *arg2);
 char *csub(char *arg1, char *arg2);
@@ -21,44 +21,45 @@ char *cmul(char *arg1, char *arg2);
 int *zerofree(int *arr, int *z);
 int *fill(char *s);
 char *f(char *n);
+char *ff(int n); 
 
 int main()
 {
         printf("\nBE AWARE! Constant ARRAY_LEN is %d\n", ARRAY_LEN);
-        char *res;
         // char *arg1 = "85375267874025857713";
         // char *arg2 = "4309692530075000254371438";
-
         // char *arg1 = "853752"; // summ 896848, sub 810656
         // char *arg2 = "43096"; // mul 36.793.296.192
+
         //res = csub("78", "1");
         //res = cmul("25", "2");
         //res = cadd("78", "1");
-        //res = cadd("78", "1");
 
-        int count = 0;
-        int input = 33; // after 33 memory will buggy
-        int tmp = input; 
-        
-        while (tmp != 0) {
-                tmp /= 10;
-                ++count;
-        }
+        //char *res;
+        //int count = 0;
+        //int input = 2; // after 33 memory will buggy
+        //int tmp = input; 
+        //
+        //while (tmp != 0) {
+        //        tmp /= 10;
+        //        ++count;
+        //}
 
-        char *arg = calloc(count + 1, sizeof(arg));
-        sprintf(arg, "%d", input);
-        printf("\narg: %s", arg);
-        res = f(arg); // !5 = 120, !15 = 1307674368000
+        //char *arg = calloc(count + 1, sizeof(arg));
+        //sprintf(arg, "%d", input);
+        //printf("\n!%s", arg);
+        //res = f(arg); // !5 = 120, !15 = 1307674368000
 
-        printf("\n result> %s", res); 
+        //printf("\n result> %s\n", res);
 
-        free(res);
-        free(arg);
+        printf("\nff.!%s",ff(5));
+        //free(res);
+        //free(arg);
         return 0;
 }
 
 char *cadd(char *arg1, char *arg2)
-{	
+{
         char *add;
         int lbig, lsmall;
         int *big, *small;
@@ -97,7 +98,7 @@ char *cadd(char *arg1, char *arg2)
                                 tmp[j--] = big[i] + small[i - delta] + mem;
                                 mem = 0;
                         }
-                }			
+                }
         }
         free(big);
         free(small);
@@ -106,7 +107,7 @@ char *cadd(char *arg1, char *arg2)
         for (i = 0; i < z; i++) {
                 add[i] = zf[i] + '0';
         }
-        
+
         free(zf);
         free(tmp);
         return add + '\0';
@@ -156,7 +157,7 @@ char *csub(char *arg1, char *arg2)
 
                         free(zf);
                         free(tmp);
-                        sum[z] = '\0';
+                        //sum[z] = '\0';
                         return sum;
                 }
         }
@@ -167,7 +168,6 @@ char *csub(char *arg1, char *arg2)
 
 char *cmul(char *arg1, char *arg2)
 {
-        char *mul;
         int lbig, lsmall;
         int *big, *small;
         int i, j, l, z = 0, k = 0;
@@ -213,12 +213,12 @@ char *cmul(char *arg1, char *arg2)
                                 if (tmp[z - offset] + stage[z] + mem >= 10) {
                                         l = (tmp[z - offset] + stage[z] + mem) / 10;
                                         tmp[z - offset] = (tmp[z - offset] + stage[z] + mem) % 10 ;
-                                        mem = l;	
-                                } else {	
+                                        mem = l;
+                                } else {
                                         tmp[z - offset] = tmp[z - offset] + stage[z] + mem;
                                         mem = 0;
                                 }
-                        }			
+                        }
                 }
                 offset++;
         }
@@ -227,11 +227,11 @@ char *cmul(char *arg1, char *arg2)
         free(stage);
 
         int *zf = zerofree(tmp, &z);
-        mul = calloc(z, sizeof(mul));
+        char *mul = calloc(z, sizeof(mul));
         for (i = 0; i < z; i++) {
                 mul[i] = zf[i] + '0';
         }
-        
+
         free(zf);
         free(tmp);
         mul[z] = '\0';
@@ -253,7 +253,7 @@ int *zerofree(int *arr, int *z) // make array without zeros
 }
 
 int *fill(char *s) // fill array with numbers from string
-{	
+{
         int len = strlen(s);
         int i;
         int *arr = calloc(len, sizeof(arr));
@@ -265,6 +265,24 @@ int *fill(char *s) // fill array with numbers from string
 
 char *f(char *n)
 {
+        //        n == 0 return 1; else return  f(n - 1) * n;
         return !strcmp(n,"0") ? "1" : cmul( f( csub(n, "1") ), n);
+}
+
+char *ff(int n)
+{
+        int i;
+        char c[10];
+        char res[ARRAY_LEN];
+        if (n == 0)
+                return "1";
+
+        for (i = 1; i <= n; i++) {
+                // res = res * i;
+                sprintf(c, "%d", i);
+                strcpy(res, cmul(res, c));
+        }
+        printf("\nresult>> %s", res);
+        return "1";
 }
 
