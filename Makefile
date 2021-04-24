@@ -1,12 +1,16 @@
 CC=gcc
 CFLAGS= -Wall -Werror -ggdb
 
-default: all
-all: bnum
+default: main
 
-bnum: main.c
-	$(CC) $(CFLAGS) -o a.out main.c
+all: bnum main 
 
-clean veryclean:
-	$(RM) a.out
+main: main.c
+	$(CC) $(CFLAGS) main.c bnum.o -o factorial 
+
+bnum: bnum.c 
+	$(CC) -c bnum.c
+
+clean:
+	$(RM) factorial
 
