@@ -1,4 +1,6 @@
 /*
+ * Big number calculation library
+ *
  * add - add
  * sub - sub
  * mul - mul
@@ -6,9 +8,11 @@
  *
  * 
  */
+
 #include <stdlib.h>
 #include <string.h>
 #include "bnum.h"
+
 char *cadd(char *arg1, char *arg2)
 {
         char *add;
